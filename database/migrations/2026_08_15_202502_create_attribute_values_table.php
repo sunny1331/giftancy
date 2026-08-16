@@ -18,9 +18,11 @@ return new class extends Migration
 
             $table->string('value');
 
-            $table->string('slug')->unique();
+            $table->string('slug');
 
-            $table->timestamps();
+$table->unique(['attribute_id', 'slug']);
+
+$table->timestamps();
 
         });
     }

@@ -46,6 +46,11 @@
 
 </a>
 
+<a href="{{ route('attribute-values.index') }}"
+   class="block px-4 py-3 rounded-lg hover:bg-gray-800">
+    🏷 Attribute Values
+</a>
+
                 <a href="{{ route('products.index') }}"
    class="block px-4 py-3 rounded-lg hover:bg-gray-800">
     📦 Products

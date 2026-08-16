@@ -78,12 +78,19 @@
 
                         </td>
 
-                        <td class="p-4">
+                        <td class="p-4 flex gap-2">
 
     <a href="{{ route('products.edit', $product->id) }}"
        class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">
 
         Edit
+
+    </a>
+
+    <a href="{{ route('products.variants.index', $product) }}"
+       class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded">
+
+        Variants
 
     </a>
 

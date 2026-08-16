@@ -21,15 +21,19 @@ return new class extends Migration
 
         $table->string('sku')->unique();
 
-        $table->decimal('price',10,2);
+        $table->decimal('price',10,2)->nullable();
 
-        $table->decimal('compare_price',10,2)->nullable();
+$table->decimal('compare_price',10,2)->nullable();
 
-        $table->integer('stock')->default(0);
+$table->decimal('cost_price',10,2)->nullable();
 
-        $table->decimal('weight',8,2)->nullable();
+$table->integer('stock')->default(0);
 
-        $table->boolean('status')->default(true);
+$table->decimal('weight',8,2)->nullable();
+
+$table->string('image')->nullable();
+
+$table->boolean('status')->default(true);
 
         $table->timestamps();
 

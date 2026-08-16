@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class ProductVariant extends Model
 {
     protected $fillable = [
-        'product_id',
-        'sku',
-        'price',
-        'compare_price',
-        'stock',
-        'weight',
-        'image',
-        'status',
-    ];
+    'product_id',
+    'sku',
+    'price',
+    'compare_price',
+    'stock',
+    'weight',
+    'image',
+    'status',
+];
 
     public function product()
     {

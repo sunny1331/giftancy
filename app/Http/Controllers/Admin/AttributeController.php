@@ -47,22 +47,23 @@ class AttributeController extends Controller
     }
 
     public function update(Request $request, Attribute $attribute)
-    {
-        $request->validate([
-            'name' => 'required|max:255',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|max:255',
+    ]);
 
-        $attribute->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'field_type' => $request->field_type,
-            'is_filterable' => $request->has('is_filterable'),
-        ]);
+    $attribute->update([
+        'name' => $request->name,
+        'slug' => Str::slug($request->name),
+        'field_type' => $request->field_type,
+        'group_name' => $request->group_name,
+        'is_filterable' => $request->has('is_filterable'),
+    ]);
 
-        return redirect()
-            ->route('attributes.index')
-            ->with('success', 'Attribute Updated Successfully.');
-    }
+    return redirect()
+        ->route('attributes.index')
+        ->with('success', 'Attribute Updated Successfully.');
+}
 
     public function destroy(Attribute $attribute)
     {
