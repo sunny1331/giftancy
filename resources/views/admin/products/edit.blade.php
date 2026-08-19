@@ -49,6 +49,39 @@ required>
 
 </div>
 
+<div>
+
+<label class="font-medium">
+
+Product Type
+
+</label>
+
+<select
+name="product_type"
+id="product_type"
+class="w-full border rounded-lg mt-2 px-4 py-2">
+
+<option
+value="simple"
+{{ $product->product_type=='simple' ? 'selected' : '' }}>
+
+Simple Product
+
+</option>
+
+<option
+value="variable"
+{{ $product->product_type=='variable' ? 'selected' : '' }}>
+
+Variable Product
+
+</option>
+
+</select>
+
+</div>
+
 {{-- Category --}}
 <div>
 
@@ -150,7 +183,7 @@ class="w-full border rounded-lg mt-2 px-4 py-2">
 </div>
 
 {{-- Stock --}}
-<div>
+<div id="stockField">
 
 <label class="font-medium">
 
@@ -187,17 +220,73 @@ class="w-full border rounded-lg mt-2 px-4 py-2">
 {{-- Dimensions --}}
 <div>
 
-<label class="font-medium">
+    <label class="block mb-2 font-medium">
+        Dimensions
+    </label>
 
-Dimensions
+    <div class="grid grid-cols-3 gap-3">
 
-</label>
+        {{-- Length --}}
+        <div class="flex">
 
-<input
-type="text"
-name="dimensions"
-value="{{ old('dimensions',$product->dimensions) }}"
-class="w-full border rounded-lg mt-2 px-4 py-2">
+            <span class="px-3 border border-r-0 rounded-l-lg bg-gray-100 flex items-center font-medium">
+                L
+            </span>
+
+            <input
+                type="number"
+                step="0.01"
+                name="length"
+                value="{{ old('length', $product->length) }}"
+                class="w-full border-y border-gray-300 px-3 py-2 focus:outline-none">
+
+            <span class="px-3 border border-l-0 rounded-r-lg bg-gray-100 flex items-center text-sm text-gray-600">
+                CM
+            </span>
+
+        </div>
+
+        {{-- Width --}}
+        <div class="flex">
+
+            <span class="px-3 border border-r-0 rounded-l-lg bg-gray-100 flex items-center font-medium">
+                W
+            </span>
+
+            <input
+                type="number"
+                step="0.01"
+                name="width"
+                value="{{ old('width', $product->width) }}"
+                class="w-full border-y border-gray-300 px-3 py-2 focus:outline-none">
+
+            <span class="px-3 border border-l-0 rounded-r-lg bg-gray-100 flex items-center text-sm text-gray-600">
+                CM
+            </span>
+
+        </div>
+
+        {{-- Height --}}
+        <div class="flex">
+
+            <span class="px-3 border border-r-0 rounded-l-lg bg-gray-100 flex items-center font-medium">
+                H
+            </span>
+
+            <input
+                type="number"
+                step="0.01"
+                name="height"
+                value="{{ old('height', $product->height) }}"
+                class="w-full border-y border-gray-300 px-3 py-2 focus:outline-none">
+
+            <span class="px-3 border border-l-0 rounded-r-lg bg-gray-100 flex items-center text-sm text-gray-600">
+                CM
+            </span>
+
+        </div>
+
+    </div>
 
 </div>
 
@@ -365,6 +454,110 @@ class="w-full border rounded-lg mt-2 px-4 py-2">
 
 </div>
 
+{{-- Inventory --}}
+<div class="mt-8 border-t pt-6">
+
+    <h2 class="text-xl font-bold mb-5">
+        Inventory
+    </h2>
+
+    <div class="grid grid-cols-2 gap-6">
+
+        <div>
+
+            <label class="font-medium">
+                Track Inventory
+            </label>
+
+            <select
+                name="track_inventory"
+                class="w-full border rounded-lg mt-2 px-4 py-2">
+
+                <option value="1"
+                    {{ $product->track_inventory ? 'selected' : '' }}>
+                    Yes
+                </option>
+
+                <option value="0"
+                    {{ !$product->track_inventory ? 'selected' : '' }}>
+                    No
+                </option>
+
+            </select>
+
+        </div>
+
+        <div>
+
+            <label class="font-medium">
+                Stock Status
+            </label>
+
+            <select
+                name="stock_status"
+                class="w-full border rounded-lg mt-2 px-4 py-2">
+
+                <option value="in_stock"
+                    {{ $product->stock_status=='in_stock' ? 'selected' : '' }}>
+                    In Stock
+                </option>
+
+                <option value="out_of_stock"
+                    {{ $product->stock_status=='out_of_stock' ? 'selected' : '' }}>
+                    Out of Stock
+                </option>
+
+                <option value="pre_order"
+                    {{ $product->stock_status=='pre_order' ? 'selected' : '' }}>
+                    Pre Order
+                </option>
+
+            </select>
+
+        </div>
+
+        <div>
+
+            <label class="font-medium">
+                Low Stock Alert
+            </label>
+
+            <input
+                type="number"
+                name="low_stock_alert"
+                value="{{ old('low_stock_alert',$product->low_stock_alert) }}"
+                class="w-full border rounded-lg mt-2 px-4 py-2">
+
+        </div>
+
+        <div>
+
+            <label class="font-medium">
+                Continue Selling
+            </label>
+
+            <select
+                name="continue_selling"
+                class="w-full border rounded-lg mt-2 px-4 py-2">
+
+                <option value="0"
+                    {{ !$product->continue_selling ? 'selected' : '' }}>
+                    No
+                </option>
+
+                <option value="1"
+                    {{ $product->continue_selling ? 'selected' : '' }}>
+                    Yes
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+</div>
+
 {{-- Product Settings --}}
 <div class="grid grid-cols-2 gap-6 mt-8">
 
@@ -455,25 +648,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function loadAttributes(categoryId){
 
-        if(!categoryId){
+    if(!categoryId){
+        document.getElementById('attributeFields').innerHTML='';
+        return;
+    }
 
-            document.getElementById('attributeFields').innerHTML='';
+    fetch(`/admin/products/category/${categoryId}/attributes?product_id={{ $product->id }}`)
 
-            return;
+        .then(response => response.text())
 
-        }
+        .then(html => {
 
-        fetch('/admin/products/category/' + categoryId + '/attributes?product_id={{ $product->id }}')
+            document.getElementById('attributeFields').innerHTML = html;
 
-        .then(res=>res.text())
+        })
 
-        .then(html=>{
+        .catch(error => {
 
-            document.getElementById('attributeFields').innerHTML=html;
+            console.error(error);
 
         });
 
-    }
+}
 
     loadAttributes(category.value);
 
@@ -519,6 +715,30 @@ document.querySelectorAll('.delete-image').forEach(function(button){
     });
 
 });
+
+function toggleStock(){
+
+    let type = document.getElementById('product_type').value;
+
+    let stock = document.getElementById('stockField');
+
+    if(type === 'variable'){
+
+        stock.style.display = 'none';
+
+    }else{
+
+        stock.style.display = 'block';
+
+    }
+
+}
+
+toggleStock();
+
+document
+.getElementById('product_type')
+.addEventListener('change', toggleStock);
 
 </script>
 

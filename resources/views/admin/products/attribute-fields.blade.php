@@ -37,16 +37,16 @@
     @elseif($attribute->field_type == 'text')
 
         <input
-            type="text"
-            name="attributes[{{ $attribute->id }}]"
-            class="w-full border rounded-lg px-4 py-2">
-
+    type="text"
+    name="attributes[{{ $attribute->id }}]"
+    value="{{ old('attributes.'.$attribute->id, $selected[$attribute->id] ?? '') }}"
+    class="w-full border rounded-lg px-4 py-2">
     @elseif($attribute->field_type == 'textarea')
 
         <textarea
-            name="attributes[{{ $attribute->id }}]"
-            class="w-full border rounded-lg px-4 py-2"
-            rows="3"></textarea>
+    name="attributes[{{ $attribute->id }}]"
+    class="w-full border rounded-lg px-4 py-2"
+    rows="3">{{ old('attributes.'.$attribute->id, $selected[$attribute->id] ?? '') }}</textarea>
 
     @endif
 

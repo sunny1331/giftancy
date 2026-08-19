@@ -30,6 +30,14 @@ class Product extends Model
     'meta_title',
     'meta_keywords',
     'meta_description',
+    'product_type',
+    'length',
+    'width',
+    'height',
+    'track_inventory',
+    'low_stock_alert',
+    'continue_selling',
+    'stock_status',
 ];
 
 public function category()

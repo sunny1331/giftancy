@@ -11,7 +11,7 @@ class ProductImage extends Model
         'product_id',
         'image',
         'sort_order',
-        'is_featured',
+        'is_primary',
 
     ];
 

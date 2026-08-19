@@ -87,12 +87,17 @@
 
     </a>
 
-    <a href="{{ route('products.variants.index', $product) }}"
-       class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded">
+    @if($product->product_type == 'variable')
 
-        Variants
+<a
+href="{{ route('products.variants.index',$product->id) }}"
+class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded">
 
-    </a>
+Variants
+
+</a>
+
+@endif
 
 </td>
 
