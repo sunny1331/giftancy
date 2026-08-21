@@ -39,8 +39,6 @@ class ProductController extends Controller
 
     'name' => 'required|max:255',
 
-    'sku' => 'required|unique:products,sku',
-
     'price' => 'required|numeric',
 
     'compare_price' => 'nullable|numeric',
@@ -97,12 +95,33 @@ if ($request->hasFile('featured_image')) {
 
    DB::transaction(function () use ($request, $featuredImage) {
 
+    $category = Category::lockForUpdate()->findOrFail($request->category_id);
+
+$prefix = strtoupper($category->sku_prefix);
+
+if (empty($prefix)) {
+    $prefix = strtoupper(substr(preg_replace('/[^A-Za-z]/', '', $category->name), 0, 3));
+}
+
+$sku = $prefix . '-' . str_pad($category->next_sku_number, 3, '0', STR_PAD_LEFT);
+
+while (Product::where('sku', $sku)->exists()) {
+
+    $category->increment('next_sku_number');
+
+    $category->refresh();
+
+    $sku = $prefix . '-' . str_pad($category->next_sku_number, 3, '0', STR_PAD_LEFT);
+}
+
+$category->increment('next_sku_number');
+   
     $product = Product::create([
 
         'category_id' => $request->category_id,
         'name' => $request->name,
         'slug' => Str::slug($request->name),
-        'sku' => $request->sku,
+        'sku' => $sku,
         'description' => $request->description,
         'price' => $request->price,
         'compare_price' => $request->compare_price,

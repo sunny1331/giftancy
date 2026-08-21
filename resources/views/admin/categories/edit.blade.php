@@ -21,6 +21,34 @@
                     Category Name
                 </label>
 
+                <div class="mb-5">
+
+    <label class="block mb-2 font-medium">
+        SKU Prefix
+    </label>
+
+    <input
+        type="text"
+        name="sku_prefix"
+        value="{{ old('sku_prefix', $category->sku_prefix) }}"
+        class="w-full border rounded-lg px-4 py-2 uppercase"
+        placeholder="Example: FLW"
+        maxlength="10"
+        required
+    >
+
+    <p class="text-gray-500 text-sm mt-2">
+        Example: FLW = Flowers, DIY = Do It Yourself
+    </p>
+
+    @error('sku_prefix')
+        <p class="text-red-600 text-sm mt-2">
+            {{ $message }}
+        </p>
+    @enderror
+
+</div>
+
                 <input
                     type="text"
                     name="name"

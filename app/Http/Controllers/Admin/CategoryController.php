@@ -32,9 +32,10 @@ class CategoryController extends Controller
    public function store(Request $request)
 {
     $request->validate([
-        'name' => 'required|max:255',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-    ]);
+    'name' => 'required|max:255',
+    'sku_prefix' => 'required|max:10|unique:categories,sku_prefix',
+    'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+]);
 
     $imageName = null;
 
@@ -50,10 +51,12 @@ class CategoryController extends Controller
     }
 
     \App\Models\Category::create([
-        'name'  => $request->name,
-        'slug'  => \Illuminate\Support\Str::slug($request->name),
-        'image' => $imageName,
-    ]);
+    'name'            => $request->name,
+    'slug'            => \Illuminate\Support\Str::slug($request->name),
+    'sku_prefix'      => strtoupper($request->sku_prefix),
+    'next_sku_number' => 1,
+    'image'           => $imageName,
+]);
 
     return redirect()
         ->route('categories.index')
@@ -83,16 +86,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
 {
-    $request->validate([
-        'name' => 'required|max:255',
-    ]);
-
     $category = \App\Models\Category::findOrFail($id);
 
+$request->validate([
+    'name' => 'required|max:255',
+    'sku_prefix' => 'required|max:10|unique:categories,sku_prefix,' . $category->id,
+]);
+
     $category->update([
-        'name' => $request->name,
-        'slug' => \Illuminate\Support\Str::slug($request->name),
-    ]);
+    'name'       => $request->name,
+    'slug'       => \Illuminate\Support\Str::slug($request->name),
+    'sku_prefix' => strtoupper($request->sku_prefix),
+]);
 
     return redirect()
         ->route('categories.index')

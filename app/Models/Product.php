@@ -38,6 +38,7 @@ class Product extends Model
     'low_stock_alert',
     'continue_selling',
     'stock_status',
+    'next_variant_number',
 ];
 
 public function category()

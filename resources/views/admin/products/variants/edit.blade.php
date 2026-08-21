@@ -145,22 +145,22 @@ Inactive
 
 <hr class="my-8">
 
-<h2 class="text-xl font-bold mb-5">
-Variant Image
-</h2>
+<div>
 
-@if($variant->image)
+    <label class="block font-medium mb-3">
+        Variant Images
+    </label>
 
-<img
-    src="{{ asset('storage/'.$variant->image) }}"
-    class="w-40 h-40 object-cover rounded-lg border mb-4">
+    <a
+        href="{{ route('variants.images', $variant) }}"
+        class="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg">
 
-@endif
+        📷 Manage Images
 
-<input
-    type="file"
-    name="image"
-    class="w-full border rounded-lg p-2">
+    </a>
+
+</div>
+
 
 <hr class="my-8">
 

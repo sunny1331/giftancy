@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class ProductVariant extends Model
 {
     protected $fillable = [
-    'product_id',
-    'sku',
-    'price',
-    'compare_price',
-    'stock',
-    'weight',
-    'image',
-    'status',
+
+'product_id',
+'sku',
+'price',
+'compare_price',
+'stock',
+'weight',
+'status',
+
 ];
 
     public function product()
@@ -26,4 +27,17 @@ class ProductVariant extends Model
     {
         return $this->hasMany(ProductVariantValue::class);
     }
+
+    public function images()
+{
+    return $this->hasMany(ProductVariantImage::class);
+}
+
+public function primaryImage()
+{
+    return $this->hasOne(ProductVariantImage::class)
+                ->where('is_primary', 1);
+}
+
+
 }

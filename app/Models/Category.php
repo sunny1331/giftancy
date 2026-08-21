@@ -8,9 +8,12 @@ use App\Models\Attribute;
 class Category extends Model
 {
     protected $fillable = [
-        'name',
-        'slug',
-    ];
+    'name',
+    'slug',
+    'sku_prefix',
+    'next_sku_number',
+    'image',
+];
 
     public function attributes()
     {

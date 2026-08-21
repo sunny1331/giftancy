@@ -36,6 +36,14 @@ Product Variants
 
         </a>
 
+        <a
+href="{{ route('products.variants.generate',$product) }}"
+class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+
+⚡ Generate Variants
+
+</a>
+
     </div>
 
 </div>
@@ -47,6 +55,8 @@ Product Variants
 <thead class="bg-gray-100">
 
 <tr>
+
+<th class="p-3 text-left">Image</th>
 
 <th class="p-3 text-left">SKU</th>
 
@@ -72,19 +82,49 @@ Product Variants
 
 <td class="p-3">
 
+@if($variant->primaryImage)
+
+<img
+    src="{{ asset('storage/'.$variant->primaryImage->image) }}"
+    class="w-14 h-14 rounded-lg border object-cover">
+
+@else
+
+<div class="w-14 h-14 rounded-lg border bg-gray-100 flex items-center justify-center text-gray-400">
+
+No Image
+
+</div>
+
+@endif
+
+</td>
+
+<td class="p-3">
+
 {{ $variant->sku }}
 
 </td>
 
 <td class="p-3">
 
-@foreach($variant->values as $value)
+@foreach($variant->values as $item)
 
-<span class="inline-block bg-gray-200 rounded px-2 py-1 mr-2 mb-1">
+<div class="mb-1">
 
-{{ $value->value->value ?? '-' }}
+    <span class="font-semibold">
 
-</span>
+        {{ $item->attribute->name ?? '-' }} :
+
+    </span>
+
+    <span class="bg-gray-100 px-2 py-1 rounded">
+
+        {{ $item->value->value ?? '-' }}
+
+    </span>
+
+</div>
 
 @endforeach
 
@@ -92,31 +132,47 @@ Product Variants
 
 <td class="p-3">
 
+<div class="font-semibold text-gray-900">
+
 ₹{{ number_format($variant->price,2) }}
 
+</div>
+
+@if($variant->compare_price)
+
+<div class="text-sm text-gray-500 line-through">
+
+₹{{ number_format($variant->compare_price,2) }}
+
+</div>
+
+@endif
+
 </td>
 
 <td class="p-3">
 
-{{ $variant->stock }}
+@if($variant->stock > 10)
 
-</td>
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 font-semibold">
 
-<td class="p-3">
+🟢 {{ $variant->stock }} In Stock
 
-@if($variant->status)
+</span>
 
-<span class="text-green-600 font-semibold">
+@elseif($variant->stock > 0)
 
-Active
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 font-semibold">
+
+🟡 {{ $variant->stock }} Low Stock
 
 </span>
 
 @else
 
-<span class="text-red-600 font-semibold">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 font-semibold">
 
-Inactive
+🔴 Out of Stock
 
 </span>
 
@@ -124,30 +180,61 @@ Inactive
 
 </td>
 
-<td class="p-3 text-center">
+<td class="p-3">
 
-<div class="flex justify-center gap-2">
+@if($variant->status)
+
+<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700">
+
+    🟢 Active
+
+</span>
+
+@else
+
+<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-700">
+
+    🔴 Inactive
+
+</span>
+
+@endif
+
+</td>
+
+<td class="p-3">
+
+<div class="flex justify-center items-center gap-2">
 
 <a
 href="{{ route('products.variants.edit',$variant) }}"
-class="bg-yellow-500 text-white px-3 py-1 rounded">
+class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition">
 
-Edit
+✏️ Edit
+
+</a>
+
+<a
+href="{{ route('variants.images',$variant) }}"
+class="bg-indigo-600 text-white px-3 py-1 rounded">
+
+Images
 
 </a>
 
 <form
 method="POST"
-action="{{ route('products.variants.destroy',$variant) }}">
+action="{{ route('products.variants.destroy',$variant) }}"
+onsubmit="return confirm('Are you sure you want to delete this variant?');">
 
 @csrf
 @method('DELETE')
 
 <button
-onclick="return confirm('Delete Variant?')"
-class="bg-red-600 text-white px-3 py-1 rounded">
+type="submit"
+class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
 
-Delete
+🗑 Delete
 
 </button>
 
@@ -164,7 +251,7 @@ Delete
 <tr>
 
 <td
-colspan="6"
+colspan="7"
 class="p-8 text-center text-gray-500">
 
 No Variants Found

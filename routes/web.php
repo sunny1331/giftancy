@@ -85,10 +85,45 @@ Route::prefix('products')->group(function () {
         [ProductVariantController::class, 'update']
     )->name('products.variants.update');
 
+    Route::get(
+    '/{product}/variants/generate',
+    [ProductVariantController::class, 'generate']
+)->name('products.variants.generate');
+
+Route::match(['GET','POST'],
+    '/{product}/variants/preview',
+    [ProductVariantController::class, 'preview']
+)->name('products.variants.preview');
+
+Route::post(
+    '/{product}/variants/store-generated',
+    [ProductVariantController::class, 'storeGenerated']
+)->name('products.variants.storeGenerated');
+
     Route::delete(
         '/variants/{variant}',
         [ProductVariantController::class, 'destroy']
     )->name('products.variants.destroy');
+
+    Route::get(
+    '/variants/{variant}/images',
+    [ProductVariantController::class, 'images']
+)->name('variants.images');
+
+Route::post(
+    '/variants/{variant}/images',
+    [ProductVariantController::class, 'uploadImages']
+)->name('variants.images.upload');
+
+Route::post(
+    '/variant-images/{image}/primary',
+    [ProductVariantController::class, 'primaryImage']
+)->name('variants.images.primary');
+
+Route::delete(
+    '/variant-images/{image}',
+    [ProductVariantController::class, 'deleteImage']
+)->name('variants.images.delete');
 
 });
 

@@ -50,10 +50,10 @@ SKU
 </label>
 
 <input
-type="text"
-name="sku"
-class="w-full border rounded-lg mt-2 px-4 py-2"
-required>
+    type="text"
+    class="w-full border rounded-lg px-4 py-2 bg-gray-100"
+    value="{{ $nextSku }}"
+    readonly>
 
 </div>
 
@@ -106,64 +106,51 @@ class="w-full border rounded-lg mt-2 px-4 py-2">
 
 </div>
 
+{{-- Weight --}}
 <div>
 
-<label class="font-medium">
+    <label class="font-medium">
+        Weight
+    </label>
 
-Weight
-
-</label>
-
-<input
-type="number"
-step="0.01"
-name="weight"
-class="w-full border rounded-lg mt-2 px-4 py-2">
+    <input
+        type="number"
+        step="0.01"
+        name="weight"
+        class="w-full border rounded-lg mt-2 px-4 py-2">
 
 </div>
 
+{{-- Status --}}
 <div>
 
-<label class="font-medium">
+    <label class="font-medium">
+        Status
+    </label>
 
-Variant Image
+    <select
+        name="status"
+        class="w-full border rounded-lg mt-2 px-4 py-2">
 
-</label>
+        <option value="1" selected>
+            Active
+        </option>
 
-<input
-type="file"
-name="image"
-class="w-full border rounded-lg mt-2 px-4 py-2">
+        <option value="0">
+            Inactive
+        </option>
+
+    </select>
 
 </div>
 
-<div>
-
-<label class="font-medium">
-
-Status
-
-</label>
-
-<select
-name="status"
-class="w-full border rounded-lg mt-2 px-4 py-2">
-
-<option value="1">
-
-Active
-
-</option>
-
-<option value="0">
-
-Inactive
-
-</option>
-
-</select>
-
 </div>
+
+<div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+
+    <p class="text-blue-700">
+        📷 Variant images can be uploaded after creating the variant.
+    </p>
 
 </div>
 

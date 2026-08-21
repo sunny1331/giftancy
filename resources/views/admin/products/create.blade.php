@@ -83,10 +83,17 @@
                 <option value="">Select Category</option>
 
                 @foreach($categories as $category)
-                    <option value="{{ $category->id }}">
-                        {{ $category->name }}
-                    </option>
-                @endforeach
+
+<option
+    value="{{ $category->id }}"
+    data-prefix="{{ $category->sku_prefix }}"
+    data-next="{{ str_pad($category->next_sku_number,3,'0',STR_PAD_LEFT) }}">
+
+    {{ $category->name }}
+
+</option>
+
+@endforeach
 
             </select>
         </div>
@@ -520,19 +527,27 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const category = document.getElementById('category');
+    const sku = document.querySelector('input[name="sku"]');
     const container = document.getElementById('dynamicAttributes');
 
     if (category) {
 
         category.addEventListener('change', function () {
 
-            container.innerHTML = '';
+    container.innerHTML = '';
 
-            if (this.value === '') {
-                return;
-            }
+    // Auto SKU
+    let option = this.options[this.selectedIndex];
 
-            fetch('/admin/products/category/' + this.value + '/attributes')
+    if(option.dataset.prefix){
+        sku.value = option.dataset.prefix + '-' + option.dataset.next;
+    }
+
+    if (this.value === '') {
+        return;
+    }
+
+    fetch('/admin/products/category/' + this.value + '/attributes')
                 .then(response => response.text())
                 .then(html => {
 
